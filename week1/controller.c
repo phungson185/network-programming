@@ -78,9 +78,9 @@ void schedule(char *stdID)
 
 void printSchedule(char *stdID)
 {
-    int day;
-    printf("Enter a day (1 to view all): ");
-    scanf("%d", &day);
+    char day[10];
+    printf("Enter a day (all to view all): ");
+    scanf("%s", day);
     int i = 0, j = 0, k = 0;
     char classCode[20][20];
     while (i < registrationTotal)
@@ -99,12 +99,14 @@ void printSchedule(char *stdID)
         k = 0;
         while (k < j)
         {
-            if (day != 1){
-                if (!strcmp(courseSchedule[i].classCode, classCode[k]) && courseSchedule[i].weekDay == day)
+            if (!strcmp(day, "all"))
+            {
+                if (!strcmp(courseSchedule[i].classCode, classCode[k]))
                     printf("%-10s|%-31s| %-15s| %-15s| %d-%-6d| %-20s| %-10s\n", courseSchedule[i].courseCode, courseSchedule[i].courseName, convertWeekDayToString(courseSchedule[i].weekDay), convertSessionToString(courseSchedule[i].session), courseSchedule[i].startTime, courseSchedule[i].endTime, courseSchedule[i].week, courseSchedule[i].room);
             }
-            else {
-                if (!strcmp(courseSchedule[i].classCode, classCode[k]))
+            else
+            {
+                if (!strcmp(courseSchedule[i].classCode, classCode[k]) && !strcmp(convertWeekDayToString(courseSchedule[i].weekDay), day))
                     printf("%-10s|%-31s| %-15s| %-15s| %d-%-6d| %-20s| %-10s\n", courseSchedule[i].courseCode, courseSchedule[i].courseName, convertWeekDayToString(courseSchedule[i].weekDay), convertSessionToString(courseSchedule[i].session), courseSchedule[i].startTime, courseSchedule[i].endTime, courseSchedule[i].week, courseSchedule[i].room);
             }
             k++;
