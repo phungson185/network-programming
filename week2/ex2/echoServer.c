@@ -3,7 +3,9 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <string.h>
+
 
 #define MAXLINE 4096   /*max text line length*/
 #define SERV_PORT 3000 /*port*/
@@ -11,7 +13,7 @@
 
 int main(int argc, char **argv)
 {
-    int listenfd, connfd, n;
+    int listenfd, connfd;
     pid_t childpid;
     socklen_t clilen;
     char buf[MAXLINE];
@@ -36,16 +38,17 @@ int main(int argc, char **argv)
 
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
+        sprintf(buf,"%s:%d", inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
         printf("%s\n", "Received request...");
-
-        while ((n = recv(connfd, buf, MAXLINE, 0)) > 0)
-        {
-            printf("%s", "String received from and resent to the client:");
-            puts(buf);
-            send(connfd, buf, n, 0);
-        }
-
-        if (n < 0)
+        
+        // while ((n = recv(connfd, buf, MAXLINE, 0)) > 0)
+        // {
+        //     printf("%s", "String received from and resent to the client:");
+        //     puts(buf);
+        //     send(connfd, buf, n, 0);
+        // }
+record:2:50:00
+        if (send(connfd, buf, strlen(buf), 0) < 0)
         {
             perror("Read error");
             exit(1);

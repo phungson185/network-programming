@@ -29,20 +29,22 @@ void menu()
     {
         strcpy(buf, "1. Login\n2. Exit\nChoose a number: ");
         choose = atoi(sendToClient(buf));
+        printf("Choose %d\n", choose);
         switch (choose)
         {
         case 1:
             login();
             break;
         case 2:
-            exit(0);
             break;
         default:
+            printf("%s\n", "Error");
             strcpy(buf, "Invalid input. Please retype !\n");
             sendToClient(buf);
-            choose = 2;
             break;
         }
+        if (choose == 2)
+            break;
     } while (choose == 1 || choose == 2);
 }
 
@@ -55,6 +57,7 @@ void login()
     strcpy(stID, sendToClient(buf));
     strcpy(buf, "Enter password: ");
     strcpy(pwd, sendToClient(buf));
+    printf("Student %s\n", stID);
     int i = 0;
     while (i < userTotal)
     {
@@ -69,6 +72,7 @@ void login()
     }
     else
     {
+        printf("%s\n", "Error");
         strcpy(buf, "Invalid account !\n");
         sendToClient(buf);
     }
@@ -79,22 +83,23 @@ void schedule(char *stdID)
     int choose;
     do
     {
-        strcpy(buf, "1. View the schedule by day or all day\n2. Exit\nChoose a number: ");
+        strcpy(buf, "1. View the schedule by day or all day\n2. Back\nChoose a number: ");
         choose = atoi(sendToClient(buf));
+        printf("Choose %d\n", choose);
         switch (choose)
         {
         case 1:
             printSchedule(stdID);
             break;
         case 2:
-            exit(0);
             break;
         default:
             strcpy(buf, "Invalid input. Please retype !\n");
             sendToClient(buf);
-            choose = 2;
             break;
         }
+        if (choose == 2)
+            break;
     } while (choose == 1 || choose == 2);
 }
 
@@ -104,7 +109,7 @@ void printSchedule(char *stdID)
     char *schel = malloc(sizeof(char *) * MAXLINE);
     strcpy(buf, "Enter a day (all to view all): ");
     strcpy(day, sendToClient(buf));
-
+    printf("Select %s\n", day);
     int i = 0, j = 0, k = 0;
     char classCode[20][20];
     while (i < registrationTotal)
